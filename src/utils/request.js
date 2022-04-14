@@ -1,6 +1,10 @@
 import axios from 'axios'
-import store from '@/store'
+import { useUserStore } from '@/store/modules/user'
 import { getToken } from '@/utils/auth'
+
+const userStore = () => {
+  return useUserStore()
+}
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -9,7 +13,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
-    if (store.getters.token) {
+    if (userStore.getterToken) {
       config.headers['Authorization'] = getToken()
     }
     return config
@@ -27,9 +31,7 @@ service.interceptors.response.use(
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 401) {
-        store.dispatch('user/resetToken').then(() => {
-          location.reload()
-        })
+        userStore.resetToken()
       }
 
       return Promise.reject(new Error(res.message || 'Error'))

@@ -1,5 +1,4 @@
 import router from './router'
-import store from './store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
@@ -7,7 +6,7 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/home', '/about'] // no redirect whitelist
+const whiteList = ['/login', '/home'] // no redirect whitelist
 
 router.beforeEach(async (to, from, next) => {
   // start progress bar
@@ -25,18 +24,19 @@ router.beforeEach(async (to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      const hasGetUserInfo = store.getters.name
+      // const hasGetUserInfo = store.getters.name
+      const hasGetUserInfo = 's'
       if (hasGetUserInfo) {
         next()
       } else {
         try {
           // get user info
-          await store.dispatch('user/getInfo')
+          // await store.dispatch('user/getInfo')
 
           next()
         } catch (error) {
           // remove token and go to login page to re-login
-          await store.dispatch('user/resetToken')
+          // await store.dispatch('user/resetToken')
           // TODO 错误消息
           // ElMessage.error(error || 'Has Error')
           next(`/login?redirect=${to.path}`)

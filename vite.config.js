@@ -1,15 +1,16 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import * as path from 'path'
 
-// 引入文件
-const path = require('path')
+const resolve = p => {
+  return path.resolve(__dirname, p)
+}
 
 export default () => {
   return defineConfig({
     server: {
       port: 3000,
       open: false,
-      // 代理
       proxy: {
         '/dev-api': {
           target: 'http://localhost:8080',
@@ -18,13 +19,11 @@ export default () => {
         }
       }
     },
-    // 别名
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src')
+        '@': resolve('./src')
       }
     },
-    // base: loadEnv(mode, process.cwd()).VITE_APP_BASE_API,
     plugins: [vue()]
   })
 }

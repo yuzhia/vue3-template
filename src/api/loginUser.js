@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export const login = data => {
   return request({
     url: '/user/login',
     method: 'post',
@@ -8,14 +8,14 @@ export function login(data) {
   })
 }
 
-export function getInfo() {
+export const getInfo = () => {
   return request({
     url: '/user/info',
     method: 'get'
   })
 }
 
-export function logout() {
+export const logout = () => {
   return request({
     url: '/user/logout',
     method: 'post'
